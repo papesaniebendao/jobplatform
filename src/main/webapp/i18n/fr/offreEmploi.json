@@ -1,0 +1,31 @@
+{
+  "jobplatformApp": {
+    "offreEmploi": {
+      "home": {
+        "title": "OffreEmplois",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Offre Emploi",
+        "createOrEditLabel": "Créer ou éditer un Offre Emploi",
+        "notFound": "Aucun Offre Emploi trouvé"
+      },
+      "created": "Un nouveau Offre Emploi a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Offre Emploi avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Offre Emploi avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Offre Emploi {{ id }} ?"
+      },
+      "detail": {
+        "title": "Offre Emploi"
+      },
+      "id": "ID",
+      "titre": "Titre",
+      "description": "Description",
+      "localisation": "Localisation",
+      "salaire": "Salaire",
+      "datePublication": "Date Publication",
+      "dateExpiration": "Date Expiration",
+      "typeContrat": "Type Contrat",
+      "recruteur": "Recruteur"
+    }
+  }
+}

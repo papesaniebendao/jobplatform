@@ -1,0 +1,55 @@
+enum RoleUtilisateur {
+  CANDIDAT,
+  RECRUTEUR
+}
+
+enum StatutCandidature {
+  EN_ATTENTE,
+  ACCEPTEE,
+  REFUSEE
+}
+
+entity Utilisateur {
+  nom String required,
+  telephone String,
+  role RoleUtilisateur required,
+  isActive Boolean required
+}
+
+entity CV {
+  urlFichier String required
+}
+
+entity TypeContrat {
+  nom String required
+}
+
+entity OffreEmploi {    
+  titre String required,
+  description String required,
+  localisation String required,
+  salaire Double,
+  datePublication Instant required,
+  dateExpiration Instant
+}
+
+entity Candidature {
+  datePostulation Instant required,
+  statut StatutCandidature required
+}
+
+relationship OneToOne {
+  Utilisateur{user(login)} to User with builtInEntity,
+  Utilisateur{cv} to CV
+}
+
+relationship ManyToOne {    
+  OffreEmploi{typeContrat} to TypeContrat,
+  OffreEmploi{recruteur} to Utilisateur,
+  Candidature{candidat} to Utilisateur,
+  Candidature{offreEmploi} to OffreEmploi
+}
+
+dto * with mapstruct
+paginate OffreEmploi, Candidature with pagination
+service * with serviceClass

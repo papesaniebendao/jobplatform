@@ -1,0 +1,27 @@
+{
+  "jobplatformApp": {
+    "candidature": {
+      "home": {
+        "title": "Candidatures",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Candidature",
+        "createOrEditLabel": "Créer ou éditer un Candidature",
+        "notFound": "Aucun Candidature trouvé"
+      },
+      "created": "Un nouveau Candidature a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Candidature avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Candidature avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Candidature {{ id }} ?"
+      },
+      "detail": {
+        "title": "Candidature"
+      },
+      "id": "ID",
+      "datePostulation": "Date Postulation",
+      "statut": "Statut",
+      "candidat": "Candidat",
+      "offreEmploi": "Offre Emploi"
+    }
+  }
+}

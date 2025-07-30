@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (utilisateur(); as utilisateurRef) {
+      <div>
+        <h2 data-cy="utilisateurDetailsHeading"><span jhiTranslate="jobplatformApp.utilisateur.detail.title">Utilisateur</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ utilisateurRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.nom">Nom</span></dt>
+          <dd>
+            <span>{{ utilisateurRef.nom }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.telephone">Telephone</span></dt>
+          <dd>
+            <span>{{ utilisateurRef.telephone }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.role">Role</span></dt>
+          <dd>
+            <span [jhiTranslate]="'jobplatformApp.RoleUtilisateur.' + (utilisateurRef.role ?? 'null')">{{
+              { null: '', CANDIDAT: 'CANDIDAT', RECRUTEUR: 'RECRUTEUR' }[utilisateurRef.role ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.isActive">Is Active</span></dt>
+          <dd>
+            <span>{{ utilisateurRef.isActive }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.user">User</span></dt>
+          <dd>
+            <span>{{ utilisateurRef.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.utilisateur.cv">Cv</span></dt>
+          <dd>
+            @if (utilisateur()!.cv) {
+              <div>
+                <a [routerLink]="['/cv', utilisateur()!.cv?.id, 'view']">{{ utilisateurRef.cv?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/utilisateur', utilisateurRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

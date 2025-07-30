@@ -1,0 +1,18 @@
+{
+  "annotations": {
+    "changelogDate": "20250727223429"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "urlFichier",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "CV",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

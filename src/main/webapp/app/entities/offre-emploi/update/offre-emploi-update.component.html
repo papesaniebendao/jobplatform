@@ -1,0 +1,180 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-offre-emploi-heading"
+        data-cy="OffreEmploiCreateUpdateHeading"
+        jhiTranslate="jobplatformApp.offreEmploi.home.createOrEditLabel"
+      >
+        Créer ou éditer un Offre Emploi
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="jobplatformApp.offreEmploi.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let titreRef = editForm.get('titre')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_titre" jhiTranslate="jobplatformApp.offreEmploi.titre">Titre</label>
+          <input type="text" class="form-control" name="titre" id="field_titre" data-cy="titre" formControlName="titre" />
+          @if (titreRef.invalid && (titreRef.dirty || titreRef.touched)) {
+            <div>
+              @if (editForm.get('titre')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let descriptionRef = editForm.get('description')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="jobplatformApp.offreEmploi.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          @if (descriptionRef.invalid && (descriptionRef.dirty || descriptionRef.touched)) {
+            <div>
+              @if (editForm.get('description')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let localisationRef = editForm.get('localisation')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_localisation" jhiTranslate="jobplatformApp.offreEmploi.localisation">Localisation</label>
+          <input
+            type="text"
+            class="form-control"
+            name="localisation"
+            id="field_localisation"
+            data-cy="localisation"
+            formControlName="localisation"
+          />
+          @if (localisationRef.invalid && (localisationRef.dirty || localisationRef.touched)) {
+            <div>
+              @if (editForm.get('localisation')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_salaire" jhiTranslate="jobplatformApp.offreEmploi.salaire">Salaire</label>
+          <input type="number" class="form-control" name="salaire" id="field_salaire" data-cy="salaire" formControlName="salaire" />
+        </div>
+
+        @let datePublicationRef = editForm.get('datePublication')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_datePublication" jhiTranslate="jobplatformApp.offreEmploi.datePublication"
+            >Date Publication</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_datePublication"
+              data-cy="datePublication"
+              type="datetime-local"
+              class="form-control"
+              name="datePublication"
+              formControlName="datePublication"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (datePublicationRef.invalid && (datePublicationRef.dirty || datePublicationRef.touched)) {
+            <div>
+              @if (editForm.get('datePublication')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('datePublication')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dateExpiration" jhiTranslate="jobplatformApp.offreEmploi.dateExpiration"
+            >Date Expiration</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_dateExpiration"
+              data-cy="dateExpiration"
+              type="datetime-local"
+              class="form-control"
+              name="dateExpiration"
+              formControlName="dateExpiration"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_typeContrat" jhiTranslate="jobplatformApp.offreEmploi.typeContrat">Type Contrat</label>
+          <select
+            class="form-control"
+            id="field_typeContrat"
+            data-cy="typeContrat"
+            name="typeContrat"
+            formControlName="typeContrat"
+            [compareWith]="compareTypeContrat"
+          >
+            <option [ngValue]="null"></option>
+            @for (typeContratOption of typeContratsSharedCollection; track $index) {
+              <option [ngValue]="typeContratOption">{{ typeContratOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_recruteur" jhiTranslate="jobplatformApp.offreEmploi.recruteur">Recruteur</label>
+          <select
+            class="form-control"
+            id="field_recruteur"
+            data-cy="recruteur"
+            name="recruteur"
+            formControlName="recruteur"
+            [compareWith]="compareUtilisateur"
+          >
+            <option [ngValue]="null"></option>
+            @for (utilisateurOption of utilisateursSharedCollection; track $index) {
+              <option [ngValue]="utilisateurOption">{{ utilisateurOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "jobplatformApp": {
+    "RoleUtilisateur": {
+      "null": "",
+      "CANDIDAT": "CANDIDAT",
+      "RECRUTEUR": "RECRUTEUR"
+    }
+  }
+}

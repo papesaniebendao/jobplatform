@@ -1,0 +1,10 @@
+{
+  "jobplatformApp": {
+    "StatutCandidature": {
+      "null": "",
+      "EN_ATTENTE": "EN_ATTENTE",
+      "ACCEPTEE": "ACCEPTEE",
+      "REFUSEE": "REFUSEE"
+    }
+  }
+}

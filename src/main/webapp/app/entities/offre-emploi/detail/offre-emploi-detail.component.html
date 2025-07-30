@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (offreEmploi(); as offreEmploiRef) {
+      <div>
+        <h2 data-cy="offreEmploiDetailsHeading"><span jhiTranslate="jobplatformApp.offreEmploi.detail.title">Offre Emploi</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.titre">Titre</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.titre }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.description">Description</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.localisation">Localisation</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.localisation }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.salaire">Salaire</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.salaire }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.datePublication">Date Publication</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.datePublication | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.dateExpiration">Date Expiration</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.dateExpiration | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.typeContrat">Type Contrat</span></dt>
+          <dd>
+            @if (offreEmploi()!.typeContrat) {
+              <div>
+                <a [routerLink]="['/type-contrat', offreEmploi()!.typeContrat?.id, 'view']">{{ offreEmploiRef.typeContrat?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.recruteur">Recruteur</span></dt>
+          <dd>
+            @if (offreEmploi()!.recruteur) {
+              <div>
+                <a [routerLink]="['/utilisateur', offreEmploi()!.recruteur?.id, 'view']">{{ offreEmploiRef.recruteur?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/offre-emploi', offreEmploiRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

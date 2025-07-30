@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20250727223432"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "datePostulation",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "statut",
+      "fieldType": "StatutCandidature",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN_ATTENTE,ACCEPTEE,REFUSEE"
+    }
+  ],
+  "name": "Candidature",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "utilisateur",
+      "relationshipName": "candidat",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "offreEmploi",
+      "relationshipName": "offreEmploi",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

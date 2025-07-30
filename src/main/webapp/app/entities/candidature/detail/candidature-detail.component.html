@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (candidature(); as candidatureRef) {
+      <div>
+        <h2 data-cy="candidatureDetailsHeading"><span jhiTranslate="jobplatformApp.candidature.detail.title">Candidature</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ candidatureRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.candidature.datePostulation">Date Postulation</span></dt>
+          <dd>
+            <span>{{ candidatureRef.datePostulation | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.candidature.statut">Statut</span></dt>
+          <dd>
+            <span [jhiTranslate]="'jobplatformApp.StatutCandidature.' + (candidatureRef.statut ?? 'null')">{{
+              { null: '', EN_ATTENTE: 'EN_ATTENTE', ACCEPTEE: 'ACCEPTEE', REFUSEE: 'REFUSEE' }[candidatureRef.statut ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.candidature.candidat">Candidat</span></dt>
+          <dd>
+            @if (candidature()!.candidat) {
+              <div>
+                <a [routerLink]="['/utilisateur', candidature()!.candidat?.id, 'view']">{{ candidatureRef.candidat?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.candidature.offreEmploi">Offre Emploi</span></dt>
+          <dd>
+            @if (candidature()!.offreEmploi) {
+              <div>
+                <a [routerLink]="['/offre-emploi', candidature()!.offreEmploi?.id, 'view']">{{ candidatureRef.offreEmploi?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/candidature', candidatureRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
