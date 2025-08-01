@@ -1,8 +1,12 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Candidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.CandidatureService;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
+import com.mycompany.myapp.service.dto.MyCandidatureDTO;
+import com.mycompany.myapp.service.dto.PostulerDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +26,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.ForwardedHeaderUtils;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -221,4 +227,19 @@ public class CandidatureResource {
                 )
             );
     }
+
+    @PostMapping("offre/{offreId}")
+    public Mono<ResponseEntity<Candidature>> postuler(@PathVariable Long offreId) {
+        return candidatureService.postuler(offreId)
+            .map(saved -> ResponseEntity.status(HttpStatus.CREATED).body(saved));
+    }
+    
+    @GetMapping("/my-candidatures")
+    public Flux<MyCandidatureDTO> getMyCandidatures() {
+        return SecurityUtils.getCurrentUserLogin()
+            .flatMapMany(login -> candidatureService.findMyCandidatures(login));
+    }
+    
+
+    
 }

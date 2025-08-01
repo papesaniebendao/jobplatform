@@ -22,6 +22,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.ForwardedHeaderUtils;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -221,4 +223,15 @@ public class OffreEmploiResource {
                 )
             );
     }
+
+    @GetMapping("/search")
+    public Flux<OffreEmploiDTO> searchOffres(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Long typeContratId,
+        @RequestParam(required = false) String localisation,
+        @RequestParam(required = false) Double salaireMin
+    ) {
+        return offreEmploiService.searchOffresMotParMot(keyword, typeContratId, localisation, salaireMin);
+    }
+    
 }

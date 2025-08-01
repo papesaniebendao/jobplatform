@@ -35,6 +35,13 @@ public interface UtilisateurRepository extends ReactiveCrudRepository<Utilisateu
     @Query("SELECT * FROM utilisateur entity WHERE entity.cv_id IS NULL")
     Flux<Utilisateur> findAllWhereCvIsNull();
 
+    @Query("""
+    SELECT * FROM utilisateur u 
+    WHERE u.user_id = (SELECT id FROM jhi_user WHERE login = :login)
+    """)
+    Mono<Utilisateur> findByUserLogin(String login);
+
+
     @Override
     <S extends Utilisateur> Mono<S> save(S entity);
 

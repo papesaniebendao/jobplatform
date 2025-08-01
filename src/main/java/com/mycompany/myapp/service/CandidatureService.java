@@ -1,8 +1,20 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.Candidature;
+import com.mycompany.myapp.domain.OffreEmploi;
+import com.mycompany.myapp.domain.TypeContrat;
+import com.mycompany.myapp.domain.enumeration.StatutCandidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
+import com.mycompany.myapp.repository.OffreEmploiRepository;
+import com.mycompany.myapp.repository.UtilisateurRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
+import com.mycompany.myapp.service.dto.MyCandidatureDTO;
+import com.mycompany.myapp.service.dto.PostulerDTO;
 import com.mycompany.myapp.service.mapper.CandidatureMapper;
+
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +36,15 @@ public class CandidatureService {
 
     private final CandidatureMapper candidatureMapper;
 
-    public CandidatureService(CandidatureRepository candidatureRepository, CandidatureMapper candidatureMapper) {
+    private final UtilisateurRepository utilisateurRepository;
+    private final OffreEmploiRepository offreEmploiRepository;
+
+    public CandidatureService(CandidatureRepository candidatureRepository, CandidatureMapper candidatureMapper, UtilisateurRepository utilisateurRepository,
+    OffreEmploiRepository offreEmploiRepository) {
         this.candidatureRepository = candidatureRepository;
         this.candidatureMapper = candidatureMapper;
+        this.utilisateurRepository = utilisateurRepository;
+        this.offreEmploiRepository = offreEmploiRepository;
     }
 
     /**
@@ -114,4 +132,45 @@ public class CandidatureService {
         LOG.debug("Request to delete Candidature : {}", id);
         return candidatureRepository.deleteById(id);
     }
+
+    public Mono<Candidature> postuler(Long offreId) {
+        return SecurityUtils.getCurrentUserLogin()
+            .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non connecté")))
+            .flatMap(login -> utilisateurRepository.findByUserLogin(login)
+                .switchIfEmpty(Mono.error(new RuntimeException("Candidat introuvable")))
+                .flatMap(candidat ->
+                    candidatureRepository.findByCandidatIdAndOffreEmploiId(candidat.getId(), offreId)
+                        .hasElement()
+                        .flatMap(dejaPostule -> {
+                            if (dejaPostule) {
+                                return Mono.error(new RuntimeException("Vous avez déjà postulé à cette offre"));
+                            }
+                            return offreEmploiRepository.findById(offreId)
+                                .switchIfEmpty(Mono.error(new RuntimeException("Offre introuvable")))
+                                .flatMap(offre -> {
+                                    Candidature candidature = new Candidature();
+                                    candidature.setDatePostulation(Instant.now());
+                                    candidature.setStatut(StatutCandidature.EN_ATTENTE);
+                                    candidature.setCandidat(candidat);
+                                    candidature.setOffreEmploi(offre);
+                                    return candidatureRepository.save(candidature);
+                                });
+                        })
+                )
+            );
+    }
+
+    
+    public Flux<MyCandidatureDTO> findMyCandidatures(String login) {
+        return candidatureRepository.findMyCandidatures(login);
+    }
+    
+    
+    
+    
+    
+
+    
+
+
 }
