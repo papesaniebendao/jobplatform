@@ -2,6 +2,7 @@ package com.mycompany.myapp.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,10 @@ public class CVDTO implements Serializable {
 
     @NotNull(message = "must not be null")
     private String urlFichier;
+
+    private String nomFichier;
+
+    private Instant dateUpload;
 
     public Long getId() {
         return id;
@@ -29,6 +34,22 @@ public class CVDTO implements Serializable {
 
     public void setUrlFichier(String urlFichier) {
         this.urlFichier = urlFichier;
+    }
+
+    public String getNomFichier() {
+        return nomFichier;
+    }
+
+    public void setNomFichier(String nomFichier) {
+        this.nomFichier = nomFichier;
+    }
+
+    public Instant getDateUpload() {
+        return dateUpload;
+    }
+
+    public void setDateUpload(Instant dateUpload) {
+        this.dateUpload = dateUpload;
     }
 
     @Override
@@ -58,6 +79,8 @@ public class CVDTO implements Serializable {
         return "CVDTO{" +
             "id=" + getId() +
             ", urlFichier='" + getUrlFichier() + "'" +
+            ", nomFichier='" + getNomFichier() + "'" +
+            ", dateUpload='" + getDateUpload() + "'" +
             "}";
     }
 }

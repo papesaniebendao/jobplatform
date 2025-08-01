@@ -4,7 +4,10 @@ import { RoleUtilisateur } from 'app/entities/enumerations/role-utilisateur.mode
 
 export interface IUtilisateur {
   id: number;
+  prenom?: string | null;
   nom?: string | null;
+  nomEntreprise?: string | null;
+  secteurActivite?: string | null;
   telephone?: string | null;
   role?: keyof typeof RoleUtilisateur | null;
   isActive?: boolean | null;

@@ -1,11 +1,11 @@
-id;titre;description;localisation;salaire;date_publication;date_expiration
-1;selon turquoise trop;gigantesque meuh espérer;sale;8201.11;2025-07-27T03:25:27;2025-07-27T06:08:45
-2;ça limiter;raide membre à vie;lorsque dériver meuh;12405.43;2025-07-27T07:10:42;2025-07-26T23:18:43
-3;à l'encontre de;ouch regarder en face de;gigantesque après-demain;14203.03;2025-07-27T06:57:40;2025-07-27T13:01:10
-4;étant donné que grrr émérite;novice à bas de;ci;22617;2025-07-27T05:05:37;2025-07-27T10:58:16
-5;spécialiste avant-hier en guise de;déduire porte-parole;jeune;6269.11;2025-07-27T03:47:01;2025-07-27T22:02:32
-6;direction bâtir;apprécier;partenaire;11795.62;2025-07-27T02:38:49;2025-07-26T23:45:13
-7;par auprès de vraiment;parmi;fade glouglou;13423.09;2025-07-27T03:14:01;2025-07-27T00:56:44
-8;fonctionnaire membre de l’équipe amorphe;conférer;tordre d'après améliorer;11283.24;2025-07-27T00:18:44;2025-07-27T20:23:24
-9;près;grossir;à moins de altruiste;29515.26;2025-07-27T19:40:16;2025-07-27T12:40:04
-10;extrêmement snif confondre;former;jeune à l'encontre de;14178.31;2025-07-27T06:58:49;2025-07-27T13:45:19
+id;titre;description;localisation;salaire;date_publication;date_expiration;is_active
+1;selon turquoise trop;gigantesque meuh espérer;sale;8201.11;2025-07-27T03:25:27;2025-07-27T06:08:45;false
+2;parce que;à condition que;guère triompher puisque;18900.1;2025-07-27T00:10:26;2025-07-27T22:01:50;true
+3;ha corps enseignant;gens;fourbe;22455.15;2025-07-27T04:17:32;2025-07-27T07:43:48;false
+4;envisager gigantesque après-demain;amorphe compter;ronron ferme;23327.99;2025-07-27T19:53:53;2025-07-27T13:45:55;true
+5;quand;près subito sage;fourbe;28025.41;2025-07-27T11:59:50;2025-07-27T17:21:12;true
+6;de peur que substituer nonobstant;par de façon à mettre;snif;27196.18;2025-07-27T03:01:06;2025-07-27T07:12:53;true
+7;ordonner;auprès de;charitable;14508.09;2025-07-27T07:31:47;2025-07-27T02:56:51;true
+8;sans engloutir;secouriste;assassiner après que;18292.13;2025-07-27T18:30:58;2025-07-27T15:25:29;false
+9;bof;apte;d'après améliorer tarder;21906.69;2025-07-27T22:05:05;2025-07-27T05:20:27;true
+10;grossir;à moins de altruiste;concernant deviner lors de;25051.44;2025-07-27T08:54:10;2025-07-27T03:02:42;true

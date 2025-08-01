@@ -21,6 +21,8 @@ describe('CV Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             urlFichier: expect.any(Object),
+            nomFichier: expect.any(Object),
+            dateUpload: expect.any(Object),
           }),
         );
       });
@@ -32,6 +34,8 @@ describe('CV Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             urlFichier: expect.any(Object),
+            nomFichier: expect.any(Object),
+            dateUpload: expect.any(Object),
           }),
         );
       });

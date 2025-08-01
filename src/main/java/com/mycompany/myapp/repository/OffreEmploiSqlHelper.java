@@ -17,6 +17,7 @@ public class OffreEmploiSqlHelper {
         columns.add(Column.aliased("salaire", table, columnPrefix + "_salaire"));
         columns.add(Column.aliased("date_publication", table, columnPrefix + "_date_publication"));
         columns.add(Column.aliased("date_expiration", table, columnPrefix + "_date_expiration"));
+        columns.add(Column.aliased("is_active", table, columnPrefix + "_is_active"));
 
         columns.add(Column.aliased("type_contrat_id", table, columnPrefix + "_type_contrat_id"));
         columns.add(Column.aliased("recruteur_id", table, columnPrefix + "_recruteur_id"));

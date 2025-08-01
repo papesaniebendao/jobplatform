@@ -32,6 +32,10 @@
     {
       "fieldName": "dateExpiration",
       "fieldType": "Instant"
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
     }
   ],
   "name": "OffreEmploi",

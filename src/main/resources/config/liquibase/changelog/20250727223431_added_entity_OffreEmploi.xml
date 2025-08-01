@@ -32,6 +32,9 @@
             <column name="date_expiration" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="type_contrat_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -67,6 +70,7 @@
             <column name="salaire" type="numeric"/>
             <column name="date_publication" type="date"/>
             <column name="date_expiration" type="date"/>
+            <column name="is_active" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

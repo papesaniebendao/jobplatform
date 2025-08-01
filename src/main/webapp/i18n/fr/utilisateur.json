@@ -18,7 +18,10 @@
         "title": "Utilisateur"
       },
       "id": "ID",
+      "prenom": "Prenom",
       "nom": "Nom",
+      "nomEntreprise": "Nom Entreprise",
+      "secteurActivite": "Secteur Activite",
       "telephone": "Telephone",
       "role": "Role",
       "isActive": "Is Active",

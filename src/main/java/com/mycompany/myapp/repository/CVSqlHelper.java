@@ -12,6 +12,8 @@ public class CVSqlHelper {
         List<Expression> columns = new ArrayList<>();
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
         columns.add(Column.aliased("url_fichier", table, columnPrefix + "_url_fichier"));
+        columns.add(Column.aliased("nom_fichier", table, columnPrefix + "_nom_fichier"));
+        columns.add(Column.aliased("date_upload", table, columnPrefix + "_date_upload"));
 
         return columns;
     }

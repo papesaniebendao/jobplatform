@@ -14,8 +14,17 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="prenom" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="nom" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
+            </column>
+            <column name="nom_entreprise" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="secteur_activite" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="telephone" type="varchar(255)">
                 <constraints nullable="true" />
@@ -25,9 +34,6 @@
             </column>
             <column name="is_active" type="boolean">
                 <constraints nullable="false" />
-            </column>
-            <column name="photo_url" type="varchar(255)">
-                <constraints nullable="true" />
             </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_utilisateur__user_id" />
@@ -56,11 +62,13 @@
                   tableName="utilisateur"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="prenom" type="string"/>
             <column name="nom" type="string"/>
+            <column name="nom_entreprise" type="string"/>
+            <column name="secteur_activite" type="string"/>
             <column name="telephone" type="string"/>
             <column name="role" type="string"/>
             <column name="is_active" type="boolean"/>
-            <column name="photo_url" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

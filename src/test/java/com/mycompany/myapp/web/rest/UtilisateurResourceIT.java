@@ -43,8 +43,17 @@ import reactor.core.publisher.Flux;
 @WithMockUser
 class UtilisateurResourceIT {
 
+    private static final String DEFAULT_PRENOM = "AAAAAAAAAA";
+    private static final String UPDATED_PRENOM = "BBBBBBBBBB";
+
     private static final String DEFAULT_NOM = "AAAAAAAAAA";
     private static final String UPDATED_NOM = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NOM_ENTREPRISE = "AAAAAAAAAA";
+    private static final String UPDATED_NOM_ENTREPRISE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SECTEUR_ACTIVITE = "AAAAAAAAAA";
+    private static final String UPDATED_SECTEUR_ACTIVITE = "BBBBBBBBBB";
 
     private static final String DEFAULT_TELEPHONE = "AAAAAAAAAA";
     private static final String UPDATED_TELEPHONE = "BBBBBBBBBB";
@@ -96,7 +105,14 @@ class UtilisateurResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Utilisateur createEntity() {
-        return new Utilisateur().nom(DEFAULT_NOM).telephone(DEFAULT_TELEPHONE).role(DEFAULT_ROLE).isActive(DEFAULT_IS_ACTIVE);
+        return new Utilisateur()
+            .prenom(DEFAULT_PRENOM)
+            .nom(DEFAULT_NOM)
+            .nomEntreprise(DEFAULT_NOM_ENTREPRISE)
+            .secteurActivite(DEFAULT_SECTEUR_ACTIVITE)
+            .telephone(DEFAULT_TELEPHONE)
+            .role(DEFAULT_ROLE)
+            .isActive(DEFAULT_IS_ACTIVE);
     }
 
     /**
@@ -106,7 +122,14 @@ class UtilisateurResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Utilisateur createUpdatedEntity() {
-        return new Utilisateur().nom(UPDATED_NOM).telephone(UPDATED_TELEPHONE).role(UPDATED_ROLE).isActive(UPDATED_IS_ACTIVE);
+        return new Utilisateur()
+            .prenom(UPDATED_PRENOM)
+            .nom(UPDATED_NOM)
+            .nomEntreprise(UPDATED_NOM_ENTREPRISE)
+            .secteurActivite(UPDATED_SECTEUR_ACTIVITE)
+            .telephone(UPDATED_TELEPHONE)
+            .role(UPDATED_ROLE)
+            .isActive(UPDATED_IS_ACTIVE);
     }
 
     public static void deleteEntities(EntityManager em) {
@@ -178,27 +201,6 @@ class UtilisateurResourceIT {
 
         // Validate the Utilisateur in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    void checkNomIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        utilisateur.setNom(null);
-
-        // Create the Utilisateur, which fails.
-        UtilisateurDTO utilisateurDTO = utilisateurMapper.toDto(utilisateur);
-
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(om.writeValueAsBytes(utilisateurDTO))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -291,8 +293,14 @@ class UtilisateurResourceIT {
             .expectBody()
             .jsonPath("$.[*].id")
             .value(hasItem(utilisateur.getId().intValue()))
+            .jsonPath("$.[*].prenom")
+            .value(hasItem(DEFAULT_PRENOM))
             .jsonPath("$.[*].nom")
             .value(hasItem(DEFAULT_NOM))
+            .jsonPath("$.[*].nomEntreprise")
+            .value(hasItem(DEFAULT_NOM_ENTREPRISE))
+            .jsonPath("$.[*].secteurActivite")
+            .value(hasItem(DEFAULT_SECTEUR_ACTIVITE))
             .jsonPath("$.[*].telephone")
             .value(hasItem(DEFAULT_TELEPHONE))
             .jsonPath("$.[*].role")
@@ -336,8 +344,14 @@ class UtilisateurResourceIT {
             .expectBody()
             .jsonPath("$.id")
             .value(is(utilisateur.getId().intValue()))
+            .jsonPath("$.prenom")
+            .value(is(DEFAULT_PRENOM))
             .jsonPath("$.nom")
             .value(is(DEFAULT_NOM))
+            .jsonPath("$.nomEntreprise")
+            .value(is(DEFAULT_NOM_ENTREPRISE))
+            .jsonPath("$.secteurActivite")
+            .value(is(DEFAULT_SECTEUR_ACTIVITE))
             .jsonPath("$.telephone")
             .value(is(DEFAULT_TELEPHONE))
             .jsonPath("$.role")
@@ -367,7 +381,14 @@ class UtilisateurResourceIT {
 
         // Update the utilisateur
         Utilisateur updatedUtilisateur = utilisateurRepository.findById(utilisateur.getId()).block();
-        updatedUtilisateur.nom(UPDATED_NOM).telephone(UPDATED_TELEPHONE).role(UPDATED_ROLE).isActive(UPDATED_IS_ACTIVE);
+        updatedUtilisateur
+            .prenom(UPDATED_PRENOM)
+            .nom(UPDATED_NOM)
+            .nomEntreprise(UPDATED_NOM_ENTREPRISE)
+            .secteurActivite(UPDATED_SECTEUR_ACTIVITE)
+            .telephone(UPDATED_TELEPHONE)
+            .role(UPDATED_ROLE)
+            .isActive(UPDATED_IS_ACTIVE);
         UtilisateurDTO utilisateurDTO = utilisateurMapper.toDto(updatedUtilisateur);
 
         webTestClient
@@ -461,7 +482,7 @@ class UtilisateurResourceIT {
         Utilisateur partialUpdatedUtilisateur = new Utilisateur();
         partialUpdatedUtilisateur.setId(utilisateur.getId());
 
-        partialUpdatedUtilisateur.telephone(UPDATED_TELEPHONE).isActive(UPDATED_IS_ACTIVE);
+        partialUpdatedUtilisateur.nom(UPDATED_NOM).secteurActivite(UPDATED_SECTEUR_ACTIVITE).role(UPDATED_ROLE);
 
         webTestClient
             .patch()
@@ -492,7 +513,14 @@ class UtilisateurResourceIT {
         Utilisateur partialUpdatedUtilisateur = new Utilisateur();
         partialUpdatedUtilisateur.setId(utilisateur.getId());
 
-        partialUpdatedUtilisateur.nom(UPDATED_NOM).telephone(UPDATED_TELEPHONE).role(UPDATED_ROLE).isActive(UPDATED_IS_ACTIVE);
+        partialUpdatedUtilisateur
+            .prenom(UPDATED_PRENOM)
+            .nom(UPDATED_NOM)
+            .nomEntreprise(UPDATED_NOM_ENTREPRISE)
+            .secteurActivite(UPDATED_SECTEUR_ACTIVITE)
+            .telephone(UPDATED_TELEPHONE)
+            .role(UPDATED_ROLE)
+            .isActive(UPDATED_IS_ACTIVE);
 
         webTestClient
             .patch()

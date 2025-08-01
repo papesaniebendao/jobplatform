@@ -52,6 +52,9 @@ class OffreEmploiResourceIT {
     private static final Instant DEFAULT_DATE_EXPIRATION = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE_EXPIRATION = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final Boolean DEFAULT_IS_ACTIVE = false;
+    private static final Boolean UPDATED_IS_ACTIVE = true;
+
     private static final String ENTITY_API_URL = "/api/offre-emplois";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -90,7 +93,8 @@ class OffreEmploiResourceIT {
             .localisation(DEFAULT_LOCALISATION)
             .salaire(DEFAULT_SALAIRE)
             .datePublication(DEFAULT_DATE_PUBLICATION)
-            .dateExpiration(DEFAULT_DATE_EXPIRATION);
+            .dateExpiration(DEFAULT_DATE_EXPIRATION)
+            .isActive(DEFAULT_IS_ACTIVE);
     }
 
     /**
@@ -106,7 +110,8 @@ class OffreEmploiResourceIT {
             .localisation(UPDATED_LOCALISATION)
             .salaire(UPDATED_SALAIRE)
             .datePublication(UPDATED_DATE_PUBLICATION)
-            .dateExpiration(UPDATED_DATE_EXPIRATION);
+            .dateExpiration(UPDATED_DATE_EXPIRATION)
+            .isActive(UPDATED_IS_ACTIVE);
     }
 
     public static void deleteEntities(EntityManager em) {
@@ -291,7 +296,9 @@ class OffreEmploiResourceIT {
             .jsonPath("$.[*].datePublication")
             .value(hasItem(DEFAULT_DATE_PUBLICATION.toString()))
             .jsonPath("$.[*].dateExpiration")
-            .value(hasItem(DEFAULT_DATE_EXPIRATION.toString()));
+            .value(hasItem(DEFAULT_DATE_EXPIRATION.toString()))
+            .jsonPath("$.[*].isActive")
+            .value(hasItem(DEFAULT_IS_ACTIVE));
     }
 
     @Test
@@ -323,7 +330,9 @@ class OffreEmploiResourceIT {
             .jsonPath("$.datePublication")
             .value(is(DEFAULT_DATE_PUBLICATION.toString()))
             .jsonPath("$.dateExpiration")
-            .value(is(DEFAULT_DATE_EXPIRATION.toString()));
+            .value(is(DEFAULT_DATE_EXPIRATION.toString()))
+            .jsonPath("$.isActive")
+            .value(is(DEFAULT_IS_ACTIVE));
     }
 
     @Test
@@ -353,7 +362,8 @@ class OffreEmploiResourceIT {
             .localisation(UPDATED_LOCALISATION)
             .salaire(UPDATED_SALAIRE)
             .datePublication(UPDATED_DATE_PUBLICATION)
-            .dateExpiration(UPDATED_DATE_EXPIRATION);
+            .dateExpiration(UPDATED_DATE_EXPIRATION)
+            .isActive(UPDATED_IS_ACTIVE);
         OffreEmploiDTO offreEmploiDTO = offreEmploiMapper.toDto(updatedOffreEmploi);
 
         webTestClient
@@ -450,7 +460,8 @@ class OffreEmploiResourceIT {
         partialUpdatedOffreEmploi
             .localisation(UPDATED_LOCALISATION)
             .datePublication(UPDATED_DATE_PUBLICATION)
-            .dateExpiration(UPDATED_DATE_EXPIRATION);
+            .dateExpiration(UPDATED_DATE_EXPIRATION)
+            .isActive(UPDATED_IS_ACTIVE);
 
         webTestClient
             .patch()
@@ -487,7 +498,8 @@ class OffreEmploiResourceIT {
             .localisation(UPDATED_LOCALISATION)
             .salaire(UPDATED_SALAIRE)
             .datePublication(UPDATED_DATE_PUBLICATION)
-            .dateExpiration(UPDATED_DATE_EXPIRATION);
+            .dateExpiration(UPDATED_DATE_EXPIRATION)
+            .isActive(UPDATED_IS_ACTIVE);
 
         webTestClient
             .patch()

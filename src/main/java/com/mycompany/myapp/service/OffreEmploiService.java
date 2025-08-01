@@ -114,38 +114,4 @@ public class OffreEmploiService {
         LOG.debug("Request to delete OffreEmploi : {}", id);
         return offreEmploiRepository.deleteById(id);
     }
-    
-    /*
-    public Flux<OffreEmploiDTO> searchOffres(String texte, Long typeContratId, String localisation, Double salaireMin) {
-        return offreEmploiRepository
-            .searchOffres(texte, typeContratId, localisation, salaireMin)
-            .map(offreEmploiMapper::toDto);
-    }
-     */
-
-    public Flux<OffreEmploiDTO> searchOffresMotParMot(String texte, Long typeContratId, String localisation, Double salaireMin) {
-        // Si pas de texte → recherche simple
-        if (texte == null || texte.trim().isEmpty()) {
-            return offreEmploiRepository
-                .findAllByFilters(typeContratId, localisation, salaireMin)
-                .map(offreEmploiMapper::toDto);
-        }
-
-        // Découpe du texte en mots
-        String[] mots = texte.trim().toLowerCase().split("\\s+");
-
-        return offreEmploiRepository
-            .findAllByFilters(typeContratId, localisation, salaireMin)
-            .filter(offre -> {
-                String contenu = (offre.getTitre() + " " + offre.getDescription()).toLowerCase();
-                for (String mot : mots) {
-                    if (!contenu.contains(mot)) {
-                        return false;
-                    }
-                }
-                return true;
-            })
-            .map(offreEmploiMapper::toDto);
-    }
 }
-     

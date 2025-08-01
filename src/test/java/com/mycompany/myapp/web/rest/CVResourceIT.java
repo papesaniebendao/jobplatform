@@ -14,6 +14,8 @@ import com.mycompany.myapp.repository.EntityManager;
 import com.mycompany.myapp.service.dto.CVDTO;
 import com.mycompany.myapp.service.mapper.CVMapper;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,6 +38,12 @@ class CVResourceIT {
 
     private static final String DEFAULT_URL_FICHIER = "AAAAAAAAAA";
     private static final String UPDATED_URL_FICHIER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NOM_FICHIER = "AAAAAAAAAA";
+    private static final String UPDATED_NOM_FICHIER = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_DATE_UPLOAD = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_UPLOAD = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/cvs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -69,7 +77,7 @@ class CVResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static CV createEntity() {
-        return new CV().urlFichier(DEFAULT_URL_FICHIER);
+        return new CV().urlFichier(DEFAULT_URL_FICHIER).nomFichier(DEFAULT_NOM_FICHIER).dateUpload(DEFAULT_DATE_UPLOAD);
     }
 
     /**
@@ -79,7 +87,7 @@ class CVResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static CV createUpdatedEntity() {
-        return new CV().urlFichier(UPDATED_URL_FICHIER);
+        return new CV().urlFichier(UPDATED_URL_FICHIER).nomFichier(UPDATED_NOM_FICHIER).dateUpload(UPDATED_DATE_UPLOAD);
     }
 
     public static void deleteEntities(EntityManager em) {
@@ -221,7 +229,11 @@ class CVResourceIT {
             .jsonPath("$.[*].id")
             .value(hasItem(cV.getId().intValue()))
             .jsonPath("$.[*].urlFichier")
-            .value(hasItem(DEFAULT_URL_FICHIER));
+            .value(hasItem(DEFAULT_URL_FICHIER))
+            .jsonPath("$.[*].nomFichier")
+            .value(hasItem(DEFAULT_NOM_FICHIER))
+            .jsonPath("$.[*].dateUpload")
+            .value(hasItem(DEFAULT_DATE_UPLOAD.toString()));
     }
 
     @Test
@@ -243,7 +255,11 @@ class CVResourceIT {
             .jsonPath("$.id")
             .value(is(cV.getId().intValue()))
             .jsonPath("$.urlFichier")
-            .value(is(DEFAULT_URL_FICHIER));
+            .value(is(DEFAULT_URL_FICHIER))
+            .jsonPath("$.nomFichier")
+            .value(is(DEFAULT_NOM_FICHIER))
+            .jsonPath("$.dateUpload")
+            .value(is(DEFAULT_DATE_UPLOAD.toString()));
     }
 
     @Test
@@ -267,7 +283,7 @@ class CVResourceIT {
 
         // Update the cV
         CV updatedCV = cVRepository.findById(cV.getId()).block();
-        updatedCV.urlFichier(UPDATED_URL_FICHIER);
+        updatedCV.urlFichier(UPDATED_URL_FICHIER).nomFichier(UPDATED_NOM_FICHIER).dateUpload(UPDATED_DATE_UPLOAD);
         CVDTO cVDTO = cVMapper.toDto(updatedCV);
 
         webTestClient
@@ -361,6 +377,8 @@ class CVResourceIT {
         CV partialUpdatedCV = new CV();
         partialUpdatedCV.setId(cV.getId());
 
+        partialUpdatedCV.nomFichier(UPDATED_NOM_FICHIER);
+
         webTestClient
             .patch()
             .uri(ENTITY_API_URL_ID, partialUpdatedCV.getId())
@@ -387,7 +405,7 @@ class CVResourceIT {
         CV partialUpdatedCV = new CV();
         partialUpdatedCV.setId(cV.getId());
 
-        partialUpdatedCV.urlFichier(UPDATED_URL_FICHIER);
+        partialUpdatedCV.urlFichier(UPDATED_URL_FICHIER).nomFichier(UPDATED_NOM_FICHIER).dateUpload(UPDATED_DATE_UPLOAD);
 
         webTestClient
             .patch()

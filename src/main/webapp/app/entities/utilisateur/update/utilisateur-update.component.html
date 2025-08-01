@@ -19,17 +19,40 @@
           </div>
         }
 
-        @let nomRef = editForm.get('nom')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_prenom" jhiTranslate="jobplatformApp.utilisateur.prenom">Prenom</label>
+          <input type="text" class="form-control" name="prenom" id="field_prenom" data-cy="prenom" formControlName="prenom" />
+        </div>
+
         <div class="mb-3">
           <label class="form-label" for="field_nom" jhiTranslate="jobplatformApp.utilisateur.nom">Nom</label>
           <input type="text" class="form-control" name="nom" id="field_nom" data-cy="nom" formControlName="nom" />
-          @if (nomRef.invalid && (nomRef.dirty || nomRef.touched)) {
-            <div>
-              @if (editForm.get('nom')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nomEntreprise" jhiTranslate="jobplatformApp.utilisateur.nomEntreprise">Nom Entreprise</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nomEntreprise"
+            id="field_nomEntreprise"
+            data-cy="nomEntreprise"
+            formControlName="nomEntreprise"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_secteurActivite" jhiTranslate="jobplatformApp.utilisateur.secteurActivite"
+            >Secteur Activite</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="secteurActivite"
+            id="field_secteurActivite"
+            data-cy="secteurActivite"
+            formControlName="secteurActivite"
+          />
         </div>
 
         <div class="mb-3">

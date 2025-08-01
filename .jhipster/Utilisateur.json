@@ -6,9 +6,20 @@
   "dto": "mapstruct",
   "fields": [
     {
+      "fieldName": "prenom",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "nom",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nomEntreprise",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "secteurActivite",
+      "fieldType": "String"
     },
     {
       "fieldName": "telephone",
@@ -24,11 +35,6 @@
       "fieldName": "isActive",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "photoUrl",
-      "fieldType": "String",
-      "fieldValidateRules": []
     }
   ],
   "name": "Utilisateur",

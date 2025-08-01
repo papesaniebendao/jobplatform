@@ -18,7 +18,10 @@ type UtilisateurFormDefaults = Pick<NewUtilisateur, 'id' | 'isActive'>;
 
 type UtilisateurFormGroupContent = {
   id: FormControl<IUtilisateur['id'] | NewUtilisateur['id']>;
+  prenom: FormControl<IUtilisateur['prenom']>;
   nom: FormControl<IUtilisateur['nom']>;
+  nomEntreprise: FormControl<IUtilisateur['nomEntreprise']>;
+  secteurActivite: FormControl<IUtilisateur['secteurActivite']>;
   telephone: FormControl<IUtilisateur['telephone']>;
   role: FormControl<IUtilisateur['role']>;
   isActive: FormControl<IUtilisateur['isActive']>;
@@ -43,9 +46,10 @@ export class UtilisateurFormService {
           validators: [Validators.required],
         },
       ),
-      nom: new FormControl(utilisateurRawValue.nom, {
-        validators: [Validators.required],
-      }),
+      prenom: new FormControl(utilisateurRawValue.prenom),
+      nom: new FormControl(utilisateurRawValue.nom),
+      nomEntreprise: new FormControl(utilisateurRawValue.nomEntreprise),
+      secteurActivite: new FormControl(utilisateurRawValue.secteurActivite),
       telephone: new FormControl(utilisateurRawValue.telephone),
       role: new FormControl(utilisateurRawValue.role, {
         validators: [Validators.required],

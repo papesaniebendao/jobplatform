@@ -17,8 +17,15 @@
             <column name="url_fichier" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="nom_fichier" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_upload" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="cv" columnName="date_upload" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -39,6 +46,8 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="url_fichier" type="string"/>
+            <column name="nom_fichier" type="string"/>
+            <column name="date_upload" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

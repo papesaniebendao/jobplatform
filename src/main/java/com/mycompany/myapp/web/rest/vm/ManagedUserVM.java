@@ -2,11 +2,12 @@ package com.mycompany.myapp.web.rest.vm;
 
 import com.mycompany.myapp.service.dto.AdminUserDTO;
 import com.mycompany.myapp.domain.enumeration.RoleUtilisateur;
-import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /**
- * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.
+ * View Model extending the AdminUserDTO, which is meant to be used in the user management UI
+ * and during registration.
  */
 public class ManagedUserVM extends AdminUserDTO {
 
@@ -17,13 +18,14 @@ public class ManagedUserVM extends AdminUserDTO {
     private String password;
 
     // ---- Champs supplémentaires ----
+    private String prenom;              // Pour candidats
     @NotNull
-    private String nom;
-
+    private String nom;                 // Nom ou nom entreprise
+    private String nomEntreprise;       // Pour recruteurs
+    private String secteurActivite;     // Pour recruteurs
     private String telephone;
-
     @NotNull
-    private RoleUtilisateur role;
+    private RoleUtilisateur role;       // CANDIDAT ou RECRUTEUR
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -36,11 +38,32 @@ public class ManagedUserVM extends AdminUserDTO {
         this.password = password;
     }
 
+    public String getPrenom() {
+        return prenom;
+    }
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
     public String getNom() {
         return nom;
     }
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public String getNomEntreprise() {
+        return nomEntreprise;
+    }
+    public void setNomEntreprise(String nomEntreprise) {
+        this.nomEntreprise = nomEntreprise;
+    }
+
+    public String getSecteurActivite() {
+        return secteurActivite;
+    }
+    public void setSecteurActivite(String secteurActivite) {
+        this.secteurActivite = secteurActivite;
     }
 
     public String getTelephone() {
@@ -62,7 +85,10 @@ public class ManagedUserVM extends AdminUserDTO {
     public String toString() {
         return "ManagedUserVM{" +
             "password='" + password + '\'' +
+            ", prenom='" + prenom + '\'' +
             ", nom='" + nom + '\'' +
+            ", nomEntreprise='" + nomEntreprise + '\'' +
+            ", secteurActivite='" + secteurActivite + '\'' +
             ", telephone='" + telephone + '\'' +
             ", role=" + role +
             "} " + super.toString();

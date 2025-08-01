@@ -26,7 +26,10 @@ public class UtilisateurRowMapper implements BiFunction<Row, String, Utilisateur
     public Utilisateur apply(Row row, String prefix) {
         Utilisateur entity = new Utilisateur();
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
+        entity.setPrenom(converter.fromRow(row, prefix + "_prenom", String.class));
         entity.setNom(converter.fromRow(row, prefix + "_nom", String.class));
+        entity.setNomEntreprise(converter.fromRow(row, prefix + "_nom_entreprise", String.class));
+        entity.setSecteurActivite(converter.fromRow(row, prefix + "_secteur_activite", String.class));
         entity.setTelephone(converter.fromRow(row, prefix + "_telephone", String.class));
         entity.setRole(converter.fromRow(row, prefix + "_role", RoleUtilisateur.class));
         entity.setIsActive(converter.fromRow(row, prefix + "_is_active", Boolean.class));

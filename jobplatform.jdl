@@ -10,14 +10,19 @@ enum StatutCandidature {
 }
 
 entity Utilisateur {
-  nom String required,
+  prenom String,                // Pour candidat (optionnel)
+  nom String ,          // Pour candidat ou recruteur
+  nomEntreprise String,         // Pour recruteur (optionnel)
+  secteurActivite String,       // Pour recruteur (optionnel)
   telephone String,
   role RoleUtilisateur required,
   isActive Boolean required
 }
 
 entity CV {
-  urlFichier String required
+  urlFichier String required,
+  nomFichier String,
+  dateUpload Instant
 }
 
 entity TypeContrat {
@@ -30,7 +35,8 @@ entity OffreEmploi {
   localisation String required,
   salaire Double,
   datePublication Instant required,
-  dateExpiration Instant
+  dateExpiration Instant,
+  isActive Boolean
 }
 
 entity Candidature {

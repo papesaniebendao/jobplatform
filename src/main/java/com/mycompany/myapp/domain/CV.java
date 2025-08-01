@@ -2,6 +2,7 @@ package com.mycompany.myapp.domain;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -22,6 +23,12 @@ public class CV implements Serializable {
     @NotNull(message = "must not be null")
     @Column("url_fichier")
     private String urlFichier;
+
+    @Column("nom_fichier")
+    private String nomFichier;
+
+    @Column("date_upload")
+    private Instant dateUpload;
 
     @org.springframework.data.annotation.Transient
     private Utilisateur utilisateur;
@@ -52,6 +59,32 @@ public class CV implements Serializable {
 
     public void setUrlFichier(String urlFichier) {
         this.urlFichier = urlFichier;
+    }
+
+    public String getNomFichier() {
+        return this.nomFichier;
+    }
+
+    public CV nomFichier(String nomFichier) {
+        this.setNomFichier(nomFichier);
+        return this;
+    }
+
+    public void setNomFichier(String nomFichier) {
+        this.nomFichier = nomFichier;
+    }
+
+    public Instant getDateUpload() {
+        return this.dateUpload;
+    }
+
+    public CV dateUpload(Instant dateUpload) {
+        this.setDateUpload(dateUpload);
+        return this;
+    }
+
+    public void setDateUpload(Instant dateUpload) {
+        this.dateUpload = dateUpload;
     }
 
     public Utilisateur getUtilisateur() {
@@ -98,6 +131,8 @@ public class CV implements Serializable {
         return "CV{" +
             "id=" + getId() +
             ", urlFichier='" + getUrlFichier() + "'" +
+            ", nomFichier='" + getNomFichier() + "'" +
+            ", dateUpload='" + getDateUpload() + "'" +
             "}";
     }
 }

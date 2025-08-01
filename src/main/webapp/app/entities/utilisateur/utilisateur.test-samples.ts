@@ -2,30 +2,31 @@ import { IUtilisateur, NewUtilisateur } from './utilisateur.model';
 
 export const sampleWithRequiredData: IUtilisateur = {
   id: 7635,
-  nom: 'vaste derechef',
   role: 'CANDIDAT',
   isActive: false,
 };
 
 export const sampleWithPartialData: IUtilisateur = {
-  id: 19905,
-  nom: 'moderne au prix de exclure',
+  id: 23519,
+  telephone: '0637660345',
   role: 'RECRUTEUR',
-  isActive: true,
+  isActive: false,
 };
 
 export const sampleWithFullData: IUtilisateur = {
   id: 18250,
-  nom: 'si bien que concernant',
-  telephone: '0210962487',
+  prenom: 'si bien que concernant',
+  nom: 'résister',
+  nomEntreprise: 'parce que groin groin autant',
+  secteurActivite: 'préciser tirer personnel',
+  telephone: '0648025218',
   role: 'RECRUTEUR',
   isActive: true,
 };
 
 export const sampleWithNewData: NewUtilisateur = {
-  nom: 'hebdomadaire',
   role: 'CANDIDAT',
-  isActive: true,
+  isActive: false,
   id: null,
 };
 

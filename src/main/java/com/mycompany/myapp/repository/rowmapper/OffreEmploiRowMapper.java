@@ -32,6 +32,7 @@ public class OffreEmploiRowMapper implements BiFunction<Row, String, OffreEmploi
         entity.setSalaire(converter.fromRow(row, prefix + "_salaire", Double.class));
         entity.setDatePublication(converter.fromRow(row, prefix + "_date_publication", Instant.class));
         entity.setDateExpiration(converter.fromRow(row, prefix + "_date_expiration", Instant.class));
+        entity.setIsActive(converter.fromRow(row, prefix + "_is_active", Boolean.class));
         entity.setTypeContratId(converter.fromRow(row, prefix + "_type_contrat_id", Long.class));
         entity.setRecruteurId(converter.fromRow(row, prefix + "_recruteur_id", Long.class));
         return entity;

@@ -47,7 +47,10 @@ public class UtilisateurAsserts {
     public static void assertUtilisateurUpdatableFieldsEquals(Utilisateur expected, Utilisateur actual) {
         assertThat(actual)
             .as("Verify Utilisateur relevant properties")
+            .satisfies(a -> assertThat(a.getPrenom()).as("check prenom").isEqualTo(expected.getPrenom()))
             .satisfies(a -> assertThat(a.getNom()).as("check nom").isEqualTo(expected.getNom()))
+            .satisfies(a -> assertThat(a.getNomEntreprise()).as("check nomEntreprise").isEqualTo(expected.getNomEntreprise()))
+            .satisfies(a -> assertThat(a.getSecteurActivite()).as("check secteurActivite").isEqualTo(expected.getSecteurActivite()))
             .satisfies(a -> assertThat(a.getTelephone()).as("check telephone").isEqualTo(expected.getTelephone()))
             .satisfies(a -> assertThat(a.getRole()).as("check role").isEqualTo(expected.getRole()))
             .satisfies(a -> assertThat(a.getIsActive()).as("check isActive").isEqualTo(expected.getIsActive()));

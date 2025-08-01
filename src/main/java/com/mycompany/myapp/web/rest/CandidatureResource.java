@@ -1,6 +1,5 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.Candidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
 import com.mycompany.myapp.service.CandidatureService;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
@@ -222,14 +221,4 @@ public class CandidatureResource {
                 )
             );
     }
-
-    @PostMapping("/offres/{offreId}/postuler")
-    public Mono<ResponseEntity<Candidature>> postuler(@PathVariable Long offreId) {
-        return candidatureService.postuler(offreId)
-            .map(candidature -> ResponseEntity.status(HttpStatus.CREATED).body(candidature))
-            .onErrorResume(e -> Mono.just(ResponseEntity.badRequest().build()));
-    }
-    
-    
-
 }

@@ -10,6 +10,7 @@ export interface IOffreEmploi {
   salaire?: number | null;
   datePublication?: dayjs.Dayjs | null;
   dateExpiration?: dayjs.Dayjs | null;
+  isActive?: boolean | null;
   typeContrat?: Pick<ITypeContrat, 'id'> | null;
   recruteur?: Pick<IUtilisateur, 'id'> | null;
 }

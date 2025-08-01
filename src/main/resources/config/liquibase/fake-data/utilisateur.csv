@@ -1,11 +1,11 @@
-id;nom;telephone;role;is_active
-1;si bien que brusque jeune;+33 336134598;RECRUTEUR;true
-2;lorsque toc;0223974397;RECRUTEUR;true
-3;euh sitôt que apaiser;+33 439623742;RECRUTEUR;true
-4;probablement admirablement;0458302554;RECRUTEUR;true
-5;tranquille main-d’œuvre parmi;+33 332348629;RECRUTEUR;true
-6;a errer;+33 320335211;RECRUTEUR;true
-7;encore responsable ha;+33 518156267;RECRUTEUR;true
-8;exciter bâtir à peu près;+33 734403011;CANDIDAT;false
-9;aïe extatique;+33 509998440;RECRUTEUR;true
-10;jeune enfant contre;+33 702463914;RECRUTEUR;true
+id;prenom;nom;nom_entreprise;secteur_activite;telephone;role;is_active
+1;si bien que brusque jeune;sauf à broum;remplir;électorat sous couleur de;0578564421;CANDIDAT;false
+2;contre outre;rédaction jeune enfant;bientôt ha de façon que;cocorico trop;+33 726323486;CANDIDAT;false
+3;concurrence chef de cuisine spécialiste;groin groin absolument;renaître;tchou tchouu;0256267509;CANDIDAT;true
+4;solitaire;pff à condition que probablement;aïe extatique;terriblement adversaire broum;0788090246;CANDIDAT;false
+5;triathlète;quant à près;envelopper psitt;aussitôt que diplomate enfin;+33 264521039;CANDIDAT;true
+6;loin glouglou lectorat;trop police aigre;devant snif;pff vibrer conseil d’administration;+33 449271511;CANDIDAT;false
+7;multiple actionnaire;trop égoïste;moins;sauf à invoquer aussitôt que;0336345836;CANDIDAT;false
+8;à la faveur de;y trop commis de cuisine;rapprocher ouille là-haut;distribuer;+33 220917400;CANDIDAT;false
+9;mairie atchoum assurer;triathlète;trop peu ici corps enseignant;insérer soulever miam;0138627609;RECRUTEUR;true
+10;céans juriste prout;membre du personnel;pin-pon si;dissimuler police;0364643252;RECRUTEUR;true

@@ -28,7 +28,7 @@ type OffreEmploiFormRawValue = FormValueOf<IOffreEmploi>;
 
 type NewOffreEmploiFormRawValue = FormValueOf<NewOffreEmploi>;
 
-type OffreEmploiFormDefaults = Pick<NewOffreEmploi, 'id' | 'datePublication' | 'dateExpiration'>;
+type OffreEmploiFormDefaults = Pick<NewOffreEmploi, 'id' | 'datePublication' | 'dateExpiration' | 'isActive'>;
 
 type OffreEmploiFormGroupContent = {
   id: FormControl<OffreEmploiFormRawValue['id'] | NewOffreEmploi['id']>;
@@ -38,6 +38,7 @@ type OffreEmploiFormGroupContent = {
   salaire: FormControl<OffreEmploiFormRawValue['salaire']>;
   datePublication: FormControl<OffreEmploiFormRawValue['datePublication']>;
   dateExpiration: FormControl<OffreEmploiFormRawValue['dateExpiration']>;
+  isActive: FormControl<OffreEmploiFormRawValue['isActive']>;
   typeContrat: FormControl<OffreEmploiFormRawValue['typeContrat']>;
   recruteur: FormControl<OffreEmploiFormRawValue['recruteur']>;
 };
@@ -73,6 +74,7 @@ export class OffreEmploiFormService {
         validators: [Validators.required],
       }),
       dateExpiration: new FormControl(offreEmploiRawValue.dateExpiration),
+      isActive: new FormControl(offreEmploiRawValue.isActive),
       typeContrat: new FormControl(offreEmploiRawValue.typeContrat),
       recruteur: new FormControl(offreEmploiRawValue.recruteur),
     });
@@ -99,6 +101,7 @@ export class OffreEmploiFormService {
       id: null,
       datePublication: currentTime,
       dateExpiration: currentTime,
+      isActive: false,
     };
   }
 

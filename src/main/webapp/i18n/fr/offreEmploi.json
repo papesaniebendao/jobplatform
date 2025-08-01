@@ -24,6 +24,7 @@
       "salaire": "Salaire",
       "datePublication": "Date Publication",
       "dateExpiration": "Date Expiration",
+      "isActive": "Is Active",
       "typeContrat": "Type Contrat",
       "recruteur": "Recruteur"
     }

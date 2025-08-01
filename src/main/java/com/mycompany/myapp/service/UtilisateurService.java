@@ -122,6 +122,4 @@ public class UtilisateurService {
         LOG.debug("Request to delete Utilisateur : {}", id);
         return utilisateurRepository.deleteById(id);
     }
-
-    
 }

@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import reactor.core.publisher.Mono;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-
 /**
  * Spring Data R2DBC repository for the Utilisateur entity.
  */
@@ -27,8 +24,7 @@ public interface UtilisateurRepository extends ReactiveCrudRepository<Utilisateu
     Flux<Utilisateur> findAllWithEagerRelationships(Pageable page);
 
     @Query("SELECT * FROM utilisateur entity WHERE entity.user_id = :id")
-    Mono<Utilisateur> findByUser(Long id);
-
+    Flux<Utilisateur> findByUser(Long id);
 
     @Query("SELECT * FROM utilisateur entity WHERE entity.user_id IS NULL")
     Flux<Utilisateur> findAllWhereUserIsNull();
@@ -50,8 +46,6 @@ public interface UtilisateurRepository extends ReactiveCrudRepository<Utilisateu
 
     @Override
     Mono<Void> deleteById(Long id);
-
-    
 }
 
 interface UtilisateurRepositoryInternal {
@@ -73,4 +67,3 @@ interface UtilisateurRepositoryInternal {
 
     Mono<Void> deleteById(Long id);
 }
-

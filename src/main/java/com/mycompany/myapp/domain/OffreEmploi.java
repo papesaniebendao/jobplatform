@@ -43,6 +43,9 @@ public class OffreEmploi implements Serializable {
     @Column("date_expiration")
     private Instant dateExpiration;
 
+    @Column("is_active")
+    private Boolean isActive;
+
     @org.springframework.data.annotation.Transient
     private TypeContrat typeContrat;
 
@@ -149,6 +152,19 @@ public class OffreEmploi implements Serializable {
         this.dateExpiration = dateExpiration;
     }
 
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public OffreEmploi isActive(Boolean isActive) {
+        this.setIsActive(isActive);
+        return this;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public TypeContrat getTypeContrat() {
         return this.typeContrat;
     }
@@ -223,6 +239,7 @@ public class OffreEmploi implements Serializable {
             ", salaire=" + getSalaire() +
             ", datePublication='" + getDatePublication() + "'" +
             ", dateExpiration='" + getDateExpiration() + "'" +
+            ", isActive='" + getIsActive() + "'" +
             "}";
     }
 }

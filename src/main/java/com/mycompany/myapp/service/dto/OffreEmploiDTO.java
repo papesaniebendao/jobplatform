@@ -29,6 +29,8 @@ public class OffreEmploiDTO implements Serializable {
 
     private Instant dateExpiration;
 
+    private Boolean isActive;
+
     private TypeContratDTO typeContrat;
 
     private UtilisateurDTO recruteur;
@@ -89,6 +91,14 @@ public class OffreEmploiDTO implements Serializable {
         this.dateExpiration = dateExpiration;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public TypeContratDTO getTypeContrat() {
         return typeContrat;
     }
@@ -137,6 +147,7 @@ public class OffreEmploiDTO implements Serializable {
             ", salaire=" + getSalaire() +
             ", datePublication='" + getDatePublication() + "'" +
             ", dateExpiration='" + getDateExpiration() + "'" +
+            ", isActive='" + getIsActive() + "'" +
             ", typeContrat=" + getTypeContrat() +
             ", recruteur=" + getRecruteur() +
             "}";

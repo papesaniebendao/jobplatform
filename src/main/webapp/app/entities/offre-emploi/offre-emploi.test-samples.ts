@@ -11,13 +11,13 @@ export const sampleWithRequiredData: IOffreEmploi = {
 };
 
 export const sampleWithPartialData: IOffreEmploi = {
-  id: 23706,
-  titre: 'commis de cuisine délégation auprès de',
-  description: 'à partir de',
-  localisation: 'si bien que',
-  salaire: 11209.14,
-  datePublication: dayjs('2025-07-27T01:54'),
-  dateExpiration: dayjs('2025-07-27T05:28'),
+  id: 28713,
+  titre: 'afin de',
+  description: 'commis',
+  localisation: 'oh',
+  salaire: 8725.42,
+  datePublication: dayjs('2025-07-27T01:36'),
+  dateExpiration: dayjs('2025-07-27T07:15'),
 };
 
 export const sampleWithFullData: IOffreEmploi = {
@@ -28,6 +28,7 @@ export const sampleWithFullData: IOffreEmploi = {
   salaire: 24227.38,
   datePublication: dayjs('2025-07-27T09:54'),
   dateExpiration: dayjs('2025-07-27T14:52'),
+  isActive: false,
 };
 
 export const sampleWithNewData: NewOffreEmploi = {

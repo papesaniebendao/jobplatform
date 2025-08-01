@@ -5,10 +5,11 @@ import { provideHttpClient } from '@angular/common/http';
 import { ICV } from '../cv.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../cv.test-samples';
 
-import { CVService } from './cv.service';
+import { CVService, RestCV } from './cv.service';
 
-const requireRestSample: ICV = {
+const requireRestSample: RestCV = {
   ...sampleWithRequiredData,
+  dateUpload: sampleWithRequiredData.dateUpload?.toJSON(),
 };
 
 describe('CV Service', () => {

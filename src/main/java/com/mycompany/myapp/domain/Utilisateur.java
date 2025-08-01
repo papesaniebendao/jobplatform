@@ -20,9 +20,17 @@ public class Utilisateur implements Serializable {
     @Column("id")
     private Long id;
 
-    @NotNull(message = "must not be null")
+    @Column("prenom")
+    private String prenom;
+
     @Column("nom")
     private String nom;
+
+    @Column("nom_entreprise")
+    private String nomEntreprise;
+
+    @Column("secteur_activite")
+    private String secteurActivite;
 
     @Column("telephone")
     private String telephone;
@@ -62,6 +70,19 @@ public class Utilisateur implements Serializable {
         this.id = id;
     }
 
+    public String getPrenom() {
+        return this.prenom;
+    }
+
+    public Utilisateur prenom(String prenom) {
+        this.setPrenom(prenom);
+        return this;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
     public String getNom() {
         return this.nom;
     }
@@ -73,6 +94,32 @@ public class Utilisateur implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public String getNomEntreprise() {
+        return this.nomEntreprise;
+    }
+
+    public Utilisateur nomEntreprise(String nomEntreprise) {
+        this.setNomEntreprise(nomEntreprise);
+        return this;
+    }
+
+    public void setNomEntreprise(String nomEntreprise) {
+        this.nomEntreprise = nomEntreprise;
+    }
+
+    public String getSecteurActivite() {
+        return this.secteurActivite;
+    }
+
+    public Utilisateur secteurActivite(String secteurActivite) {
+        this.setSecteurActivite(secteurActivite);
+        return this;
+    }
+
+    public void setSecteurActivite(String secteurActivite) {
+        this.secteurActivite = secteurActivite;
     }
 
     public String getTelephone() {
@@ -182,7 +229,10 @@ public class Utilisateur implements Serializable {
     public String toString() {
         return "Utilisateur{" +
             "id=" + getId() +
+            ", prenom='" + getPrenom() + "'" +
             ", nom='" + getNom() + "'" +
+            ", nomEntreprise='" + getNomEntreprise() + "'" +
+            ", secteurActivite='" + getSecteurActivite() + "'" +
             ", telephone='" + getTelephone() + "'" +
             ", role='" + getRole() + "'" +
             ", isActive='" + getIsActive() + "'" +

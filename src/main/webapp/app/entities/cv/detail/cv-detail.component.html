@@ -19,6 +19,14 @@
           <dd>
             <span>{{ cVRef.urlFichier }}</span>
           </dd>
+          <dt><span jhiTranslate="jobplatformApp.cV.nomFichier">Nom Fichier</span></dt>
+          <dd>
+            <span>{{ cVRef.nomFichier }}</span>
+          </dd>
+          <dt><span jhiTranslate="jobplatformApp.cV.dateUpload">Date Upload</span></dt>
+          <dd>
+            <span>{{ cVRef.dateUpload | formatMediumDatetime }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

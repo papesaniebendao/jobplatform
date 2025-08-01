@@ -9,6 +9,7 @@ import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.dto.AdminUserDTO;
 import com.mycompany.myapp.service.dto.UserDTO;
+import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.vm.ManagedUserVM;
 
 import java.time.Instant;
@@ -102,64 +103,85 @@ public class UserService {
             .flatMap(this::saveUser);
     }
 
-    @Transactional
-    public Mono<User> registerUser(ManagedUserVM userVM, String password) {
-        return userRepository
-            .findOneByLogin(userVM.getLogin().toLowerCase())
-            .flatMap(existingUser -> {
-                if (!existingUser.isActivated()) {
-                    return userRepository.delete(existingUser);
-                } else {
-                    return Mono.error(new UsernameAlreadyUsedException());
-                }
-            })
-            .then(userRepository.findOneByEmailIgnoreCase(userVM.getEmail()))
-            .flatMap(existingUser -> {
-                if (!existingUser.isActivated()) {
-                    return userRepository.delete(existingUser);
-                } else {
-                    return Mono.error(new EmailAlreadyUsedException());
-                }
-            })
-            .publishOn(Schedulers.boundedElastic())
-            .then(
-                Mono.fromCallable(() -> {
-                    User newUser = new User();
-                    String encryptedPassword = passwordEncoder.encode(password);
-                    newUser.setLogin(userVM.getLogin().toLowerCase());
-                    newUser.setPassword(encryptedPassword);
-                    newUser.setFirstName(userVM.getNom()); // Tu peux splitter nom si besoin
-                    newUser.setLastName(""); // ou gérer autrement
-                    if (userVM.getEmail() != null) {
-                        newUser.setEmail(userVM.getEmail().toLowerCase());
-                    }
-                    newUser.setImageUrl(userVM.getImageUrl());
-                    newUser.setLangKey(userVM.getLangKey());
-                    newUser.setActivated(true);  // ici compte actif direct, comme tu voulais
-                    newUser.setActivationKey(null);
-                    return newUser;
-                })
-            )
-            .flatMap(newUser -> {
-                Set<Authority> authorities = new HashSet<>();
-                return authorityRepository
-                    .findById(AuthoritiesConstants.USER)
-                    .map(authorities::add)
-                    .thenReturn(newUser)
-                    .doOnNext(user -> user.setAuthorities(authorities))
-                    .flatMap(this::saveUser)
-                    .flatMap(savedUser -> {
-                        // Création de l’entité métier Utilisateur liée au User
-                        Utilisateur utilisateur = new Utilisateur();
-                        utilisateur.setNom(userVM.getNom());
-                        utilisateur.setTelephone(userVM.getTelephone());
-                        utilisateur.setRole(userVM.getRole() != null ? userVM.getRole() : RoleUtilisateur.CANDIDAT);
-                        utilisateur.setIsActive(true);
-                        utilisateur.setUser(savedUser);
-                        return utilisateurRepository.save(utilisateur).thenReturn(savedUser);
-                    });
-            });
+@Transactional
+public Mono<User> registerUser(ManagedUserVM userVM, String password) {
+    // ---- VALIDATION MÉTIER ----
+    if (userVM.getRole() == RoleUtilisateur.CANDIDAT) {
+        if (userVM.getNom() == null || userVM.getNom().isBlank()) {
+            return Mono.error(new BadRequestAlertException("Le nom est obligatoire pour un candidat", "utilisateur", "nomrequired"));
+        }
+        if (userVM.getPrenom() == null || userVM.getPrenom().isBlank()) {
+            return Mono.error(new BadRequestAlertException("Le prénom est obligatoire pour un candidat", "utilisateur", "prenomrequired"));
+        }
     }
+
+    if (userVM.getRole() == RoleUtilisateur.RECRUTEUR) {
+        if (userVM.getNomEntreprise() == null || userVM.getNomEntreprise().isBlank()) {
+            return Mono.error(new BadRequestAlertException("Le nom d'entreprise est obligatoire pour un recruteur", "utilisateur", "nomentrepriserequired"));
+        }
+        if (userVM.getSecteurActivite() == null || userVM.getSecteurActivite().isBlank()) {
+            return Mono.error(new BadRequestAlertException("Le secteur d'activité est obligatoire pour un recruteur", "utilisateur", "secteuractiviterequired"));
+        }
+    }
+
+    return userRepository
+        .findOneByLogin(userVM.getLogin().toLowerCase())
+        .flatMap(existingUser -> {
+            if (!existingUser.isActivated()) {
+                return userRepository.delete(existingUser);
+            } else {
+                return Mono.error(new UsernameAlreadyUsedException());
+            }
+        })
+        .then(userRepository.findOneByEmailIgnoreCase(userVM.getEmail()))
+        .flatMap(existingUser -> {
+            if (!existingUser.isActivated()) {
+                return userRepository.delete(existingUser);
+            } else {
+                return Mono.error(new EmailAlreadyUsedException());
+            }
+        })
+        .publishOn(Schedulers.boundedElastic())
+        .then(Mono.fromCallable(() -> {
+            User newUser = new User();
+            String encryptedPassword = passwordEncoder.encode(password);
+            newUser.setLogin(userVM.getLogin().toLowerCase());
+            newUser.setPassword(encryptedPassword);
+            newUser.setFirstName(userVM.getPrenom());
+            newUser.setLastName(userVM.getNom());
+            if (userVM.getEmail() != null) {
+                newUser.setEmail(userVM.getEmail().toLowerCase());
+            }
+            newUser.setImageUrl(userVM.getImageUrl());
+            newUser.setLangKey(userVM.getLangKey());
+            newUser.setActivated(true); // compte actif par défaut
+            newUser.setActivationKey(null);
+            return newUser;
+        }))
+        .flatMap(newUser -> {
+            Set<Authority> authorities = new HashSet<>();
+            return authorityRepository.findById(AuthoritiesConstants.USER)
+                .map(authorities::add)
+                .thenReturn(newUser)
+                .doOnNext(user -> user.setAuthorities(authorities))
+                .flatMap(this::saveUser)
+                .flatMap(savedUser -> {
+                    Utilisateur utilisateur = new Utilisateur();
+                    utilisateur.setPrenom(userVM.getPrenom());
+                    utilisateur.setNom(userVM.getNom());
+                    utilisateur.setNomEntreprise(userVM.getNomEntreprise());
+                    utilisateur.setSecteurActivite(userVM.getSecteurActivite());
+                    utilisateur.setTelephone(userVM.getTelephone());
+                    utilisateur.setRole(userVM.getRole() != null ? userVM.getRole() : RoleUtilisateur.CANDIDAT);
+                    utilisateur.setIsActive(true);
+                    utilisateur.setUser(savedUser);
+
+                    return utilisateurRepository.save(utilisateur).thenReturn(savedUser);
+                });
+        });
+}
+
+    
 
 
     @Transactional

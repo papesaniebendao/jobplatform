@@ -1,17 +1,8 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.Candidature;
-import com.mycompany.myapp.domain.OffreEmploi;
-import com.mycompany.myapp.domain.enumeration.StatutCandidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
-import com.mycompany.myapp.repository.UserRepository;
-import com.mycompany.myapp.repository.UtilisateurRepository;
-import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
 import com.mycompany.myapp.service.mapper.CandidatureMapper;
-
-import java.time.Instant;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-
 
 /**
  * Service Implementation for managing {@link com.mycompany.myapp.domain.Candidature}.
@@ -32,21 +21,13 @@ public class CandidatureService {
     private static final Logger LOG = LoggerFactory.getLogger(CandidatureService.class);
 
     private final CandidatureRepository candidatureRepository;
-    private final CandidatureMapper candidatureMapper;
-    private final UserRepository userRepository;
-    private final UtilisateurRepository utilisateurRepository;
 
-    public CandidatureService(
-        CandidatureRepository candidatureRepository,
-        CandidatureMapper candidatureMapper,
-        UserRepository userRepository,
-        UtilisateurRepository utilisateurRepository) {
+    private final CandidatureMapper candidatureMapper;
+
+    public CandidatureService(CandidatureRepository candidatureRepository, CandidatureMapper candidatureMapper) {
         this.candidatureRepository = candidatureRepository;
         this.candidatureMapper = candidatureMapper;
-        this.userRepository = userRepository;
-        this.utilisateurRepository = utilisateurRepository;
     }
-
 
     /**
      * Save a candidature.
@@ -133,34 +114,4 @@ public class CandidatureService {
         LOG.debug("Request to delete Candidature : {}", id);
         return candidatureRepository.deleteById(id);
     }
-
-    public Mono<Candidature> postuler(Long offreId) {
-        return SecurityUtils.getCurrentUserLogin()
-            .flatMap(login -> userRepository.findOneByLogin(login))
-            .flatMap(user -> utilisateurRepository.findByUser(user.getId())
-                .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non trouvé")))
-                .flatMap(utilisateur ->
-                    candidatureRepository.findByOffreEmploiIdAndCandidatId(offreId, utilisateur.getId())
-                        .flatMap(existing -> Mono.<Candidature>error(
-                            new RuntimeException("Vous avez déjà postulé à cette offre")
-                        ))
-                        .switchIfEmpty(Mono.defer(() -> {
-                            Candidature candidature = new Candidature();
-                            candidature.setDatePostulation(Instant.now());
-                            candidature.setStatut(StatutCandidature.EN_ATTENTE);
-                            candidature.setOffreEmploi(new OffreEmploi().id(offreId));
-                            candidature.setCandidat(utilisateur);
-                            return candidatureRepository.save(candidature);
-                        }))
-                )
-            );
-    }
-    
-    
-    
-    
-    
-    
-    
-
 }

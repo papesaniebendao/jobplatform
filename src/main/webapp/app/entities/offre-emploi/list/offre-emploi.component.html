@@ -82,6 +82,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="isActive">
+              <div class="d-flex">
+                <span jhiTranslate="jobplatformApp.offreEmploi.isActive">Is Active</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="typeContrat.id">
               <div class="d-flex">
                 <span jhiTranslate="jobplatformApp.offreEmploi.typeContrat">Type Contrat</span>
@@ -109,6 +116,7 @@
               <td>{{ offreEmploi.salaire }}</td>
               <td>{{ offreEmploi.datePublication | formatMediumDatetime }}</td>
               <td>{{ offreEmploi.dateExpiration | formatMediumDatetime }}</td>
+              <td>{{ offreEmploi.isActive }}</td>
               <td>
                 @if (offreEmploi.typeContrat) {
                   <div>

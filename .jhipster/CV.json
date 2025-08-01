@@ -9,6 +9,14 @@
       "fieldName": "urlFichier",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nomFichier",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateUpload",
+      "fieldType": "Instant"
     }
   ],
   "name": "CV",

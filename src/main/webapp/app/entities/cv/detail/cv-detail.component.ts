@@ -2,12 +2,13 @@ import { Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
+import { FormatMediumDatetimePipe } from 'app/shared/date';
 import { ICV } from '../cv.model';
 
 @Component({
   selector: 'jhi-cv-detail',
   templateUrl: './cv-detail.component.html',
-  imports: [SharedModule, RouterModule],
+  imports: [SharedModule, RouterModule, FormatMediumDatetimePipe],
 })
 export class CVDetailComponent {
   cV = input<ICV | null>(null);

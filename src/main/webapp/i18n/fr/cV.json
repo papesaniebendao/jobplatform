@@ -19,6 +19,8 @@
       },
       "id": "ID",
       "urlFichier": "Url Fichier",
+      "nomFichier": "Nom Fichier",
+      "dateUpload": "Date Upload",
       "utilisateur": "Utilisateur"
     }
   }

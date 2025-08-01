@@ -39,6 +39,10 @@
           <dd>
             <span>{{ offreEmploiRef.dateExpiration | formatMediumDatetime }}</span>
           </dd>
+          <dt><span jhiTranslate="jobplatformApp.offreEmploi.isActive">Is Active</span></dt>
+          <dd>
+            <span>{{ offreEmploiRef.isActive }}</span>
+          </dd>
           <dt><span jhiTranslate="jobplatformApp.offreEmploi.typeContrat">Type Contrat</span></dt>
           <dd>
             @if (offreEmploi()!.typeContrat) {

@@ -47,7 +47,9 @@ public class CVAsserts {
     public static void assertCVUpdatableFieldsEquals(CV expected, CV actual) {
         assertThat(actual)
             .as("Verify CV relevant properties")
-            .satisfies(a -> assertThat(a.getUrlFichier()).as("check urlFichier").isEqualTo(expected.getUrlFichier()));
+            .satisfies(a -> assertThat(a.getUrlFichier()).as("check urlFichier").isEqualTo(expected.getUrlFichier()))
+            .satisfies(a -> assertThat(a.getNomFichier()).as("check nomFichier").isEqualTo(expected.getNomFichier()))
+            .satisfies(a -> assertThat(a.getDateUpload()).as("check dateUpload").isEqualTo(expected.getDateUpload()));
     }
 
     /**

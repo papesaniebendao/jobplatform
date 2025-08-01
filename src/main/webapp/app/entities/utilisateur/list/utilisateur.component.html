@@ -40,9 +40,30 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="prenom">
+              <div class="d-flex">
+                <span jhiTranslate="jobplatformApp.utilisateur.prenom">Prenom</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="nom">
               <div class="d-flex">
                 <span jhiTranslate="jobplatformApp.utilisateur.nom">Nom</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nomEntreprise">
+              <div class="d-flex">
+                <span jhiTranslate="jobplatformApp.utilisateur.nomEntreprise">Nom Entreprise</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="secteurActivite">
+              <div class="d-flex">
+                <span jhiTranslate="jobplatformApp.utilisateur.secteurActivite">Secteur Activite</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -89,7 +110,10 @@
               <td>
                 <a [routerLink]="['/utilisateur', utilisateur.id, 'view']">{{ utilisateur.id }}</a>
               </td>
+              <td>{{ utilisateur.prenom }}</td>
               <td>{{ utilisateur.nom }}</td>
+              <td>{{ utilisateur.nomEntreprise }}</td>
+              <td>{{ utilisateur.secteurActivite }}</td>
               <td>{{ utilisateur.telephone }}</td>
               <td [jhiTranslate]="'jobplatformApp.RoleUtilisateur.' + (utilisateur.role ?? 'null')">
                 {{ { null: '', CANDIDAT: 'CANDIDAT', RECRUTEUR: 'RECRUTEUR' }[utilisateur.role ?? 'null'] }}
