@@ -1,6 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.Candidature;
+import com.mycompany.myapp.service.dto.CandidatureRecueDTO;
 import com.mycompany.myapp.service.dto.MyCandidatureDTO;
 
 import org.springframework.data.domain.Pageable;
@@ -53,7 +54,14 @@ public interface CandidatureRepository extends ReactiveCrudRepository<Candidatur
         """)
     Flux<MyCandidatureDTO> findMyCandidatures(@Param("login") String login);
 
-
+    @Query("""
+        SELECT c.* FROM candidature c
+        JOIN offre_emploi o ON c.offre_emploi_id = o.id
+        WHERE o.recruteur_id = :recruteurId
+    """)
+    Flux<Candidature> findAllByRecruteurId(Long recruteurId);
+    
+    
     @Override       
     Flux<Candidature> findAll();
 

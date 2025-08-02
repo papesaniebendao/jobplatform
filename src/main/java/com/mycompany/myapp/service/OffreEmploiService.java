@@ -1,14 +1,23 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.OffreEmploi;
+import com.mycompany.myapp.domain.enumeration.RoleUtilisateur;
 import com.mycompany.myapp.repository.OffreEmploiRepository;
+import com.mycompany.myapp.repository.UtilisateurRepository;
+import com.mycompany.myapp.security.SecurityUtils;
+import com.mycompany.myapp.service.dto.OffreEmploiCreateDTO;
 import com.mycompany.myapp.service.dto.OffreEmploiDTO;
 import com.mycompany.myapp.service.mapper.OffreEmploiMapper;
+
+import reactor.core.publisher.Flux;
+
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -24,8 +33,11 @@ public class OffreEmploiService {
 
     private final OffreEmploiMapper offreEmploiMapper;
 
-    public OffreEmploiService(OffreEmploiRepository offreEmploiRepository, OffreEmploiMapper offreEmploiMapper) {
+    private final UtilisateurRepository utilisateurRepository;
+
+    public OffreEmploiService(OffreEmploiRepository offreEmploiRepository, UtilisateurRepository utilisateurRepository, OffreEmploiMapper offreEmploiMapper) {
         this.offreEmploiRepository = offreEmploiRepository;
+        this.utilisateurRepository = utilisateurRepository;
         this.offreEmploiMapper = offreEmploiMapper;
     }
 
@@ -143,5 +155,41 @@ public class OffreEmploiService {
             })            
             .map(offreEmploiMapper::toDto);
     }
+
+    public Mono<OffreEmploiDTO> createOffrePourRecruteur(OffreEmploiCreateDTO dto) {
+        return SecurityUtils.getCurrentUserLogin()
+            .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non connecté")))
+            .flatMap(login -> utilisateurRepository.findByUserLogin(login))
+            .switchIfEmpty(Mono.error(new RuntimeException("Recruteur introuvable")))
+            .flatMap(recruteur -> {
+                OffreEmploi entity = new OffreEmploi();
+                entity.setTitre(dto.getTitre());
+                entity.setDescription(dto.getDescription());
+                entity.setLocalisation(dto.getLocalisation());
+                entity.setSalaire(dto.getSalaire());
+                entity.setDateExpiration(dto.getDateExpiration());
+                entity.setDatePublication(Instant.now());  // automatique
+                entity.setIsActive(true);                  // automatique
+                entity.setTypeContratId(dto.getTypeContratId());
+                entity.setRecruteurId(recruteur.getId());
+                return offreEmploiRepository.save(entity);
+            })
+            .map(offreEmploiMapper::toDto);
+    }
+    
+
+    public Flux<OffreEmploiDTO> findAllForCurrentRecruteur() {
+        return SecurityUtils.getCurrentUserLogin()
+            .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non connecté")))
+            .flatMap(utilisateurRepository::findByUserLogin)
+            .switchIfEmpty(Mono.error(new RuntimeException("Recruteur introuvable")))
+            .flatMapMany(recruteur -> 
+                offreEmploiRepository.findByRecruteur(recruteur.getId())
+            )
+            .map(offreEmploiMapper::toDto);
+    }
+
+    
+
     
 }

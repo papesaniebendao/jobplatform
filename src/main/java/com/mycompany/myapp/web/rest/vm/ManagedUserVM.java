@@ -18,9 +18,9 @@ public class ManagedUserVM extends AdminUserDTO {
     private String password;
 
     // ---- Champs supplémentaires ----
-    private String prenom;              // Pour candidats
-    @NotNull
-    private String nom;                 // Nom ou nom entreprise
+    private String prenom; 
+    private String nom;             // Pour candidats
+    @NotNull                 // Nom ou nom entreprise
     private String nomEntreprise;       // Pour recruteurs
     private String secteurActivite;     // Pour recruteurs
     private String telephone;

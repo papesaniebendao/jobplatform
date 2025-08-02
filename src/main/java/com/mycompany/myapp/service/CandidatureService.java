@@ -7,8 +7,10 @@ import com.mycompany.myapp.domain.enumeration.StatutCandidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
 import com.mycompany.myapp.repository.OffreEmploiRepository;
 import com.mycompany.myapp.repository.UtilisateurRepository;
+import com.mycompany.myapp.repository.projection.CandidatureRecueProjection;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
+import com.mycompany.myapp.service.dto.CandidatureRecueDTO;
 import com.mycompany.myapp.service.dto.MyCandidatureDTO;
 import com.mycompany.myapp.service.dto.PostulerDTO;
 import com.mycompany.myapp.service.mapper.CandidatureMapper;
@@ -164,13 +166,66 @@ public class CandidatureService {
     public Flux<MyCandidatureDTO> findMyCandidatures(String login) {
         return candidatureRepository.findMyCandidatures(login);
     }
-    
-    
-    
-    
-    
 
+
+    public Flux<CandidatureRecueDTO> findAllReceivedByCurrentRecruteur() {
+        return SecurityUtils.getCurrentUserLogin()
+            .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non connecté")))
+            .flatMap(utilisateurRepository::findByUserLogin)
+            .switchIfEmpty(Mono.error(new RuntimeException("Recruteur introuvable")))
+            .flatMapMany(recruteur -> candidatureRepository.findAllByRecruteurId(recruteur.getId()))
+            .flatMap(this::mapToRecueDTO);
+    }
     
+    private Mono<CandidatureRecueDTO> mapToRecueDTO(Candidature candidature) {
+        return utilisateurRepository.findById(candidature.getCandidatId())
+            .zipWith(offreEmploiRepository.findById(candidature.getOffreEmploiId()))
+            .map(tuple -> {
+                var candidat = tuple.getT1();
+                var offre = tuple.getT2();
+    
+                CandidatureRecueDTO dto = new CandidatureRecueDTO();
+                dto.setCandidatureId(candidature.getId());
+                dto.setDatePostulation(candidature.getDatePostulation());
+                dto.setStatut(candidature.getStatut().name());
+                // --- NOM COMPLET ---
+                String nomComplet =
+                    (candidat.getPrenom() != null ? candidat.getPrenom() + " " : "") +
+                    (candidat.getNom() != null ? candidat.getNom() : "");
+                dto.setCandidatNom(nomComplet.trim());
+                dto.setCandidatId(candidat.getId());
+          
+                dto.setCandidatTelephone(candidat.getTelephone());
+                dto.setCandidatEmail(candidat.getUser() != null ? candidat.getUser().getEmail() : null);
+                dto.setCvUrl(candidat.getCv() != null ? candidat.getCv().getUrlFichier() : null);
+    
+                dto.setOffreId(offre.getId());
+                dto.setOffreTitre(offre.getTitre());
+    
+                return dto;
+            });
+    }
+
+    public Mono<CandidatureDTO> accepterCandidature(Long candidatureId) {
+        return SecurityUtils.getCurrentUserLogin()
+            .flatMap(utilisateurRepository::findByUserLogin)
+            .switchIfEmpty(Mono.error(new RuntimeException("Recruteur non trouvé")))
+            .flatMap(recruteur ->
+                candidatureRepository.findById(candidatureId)
+                    .switchIfEmpty(Mono.error(new RuntimeException("Candidature introuvable")))
+                    .flatMap(candidature -> 
+                        offreEmploiRepository.findById(candidature.getOffreEmploiId())
+                            .flatMap(offre -> {
+                                if (!offre.getRecruteurId().equals(recruteur.getId())) {
+                                    return Mono.error(new RuntimeException("Non autorisé"));
+                                }
+                                candidature.setStatut(StatutCandidature.ACCEPTEE);
+                                return candidatureRepository.save(candidature);
+                            })
+                    )
+            )
+            .map(candidatureMapper::toDto);
+    }
 
 
 }

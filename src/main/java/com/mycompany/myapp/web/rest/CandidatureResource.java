@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.CandidatureRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.CandidatureService;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
+import com.mycompany.myapp.service.dto.CandidatureRecueDTO;
 import com.mycompany.myapp.service.dto.MyCandidatureDTO;
 import com.mycompany.myapp.service.dto.PostulerDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -233,7 +234,7 @@ public class CandidatureResource {
         return candidatureService.postuler(offreId)
             .map(saved -> ResponseEntity.status(HttpStatus.CREATED).body(saved));
     }
-    
+
     @GetMapping("/my-candidatures")
     public Flux<MyCandidatureDTO> getMyCandidatures() {
         return SecurityUtils.getCurrentUserLogin()
@@ -241,5 +242,17 @@ public class CandidatureResource {
     }
     
 
+    @GetMapping("/mes-candidatures-recues")
+    public Flux<CandidatureRecueDTO> getCandidaturesRecues() {
+        return candidatureService.findAllReceivedByCurrentRecruteur();
+    }
+
+    @PatchMapping("/{candidatureId}/accepter")
+    public Mono<ResponseEntity<CandidatureDTO>> accepterCandidature(@PathVariable Long candidatureId) {
+        return candidatureService.accepterCandidature(candidatureId)
+            .map(ResponseEntity::ok);
+    }
+
+    
     
 }

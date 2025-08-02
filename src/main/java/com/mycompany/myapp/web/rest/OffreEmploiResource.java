@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.OffreEmploiRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.OffreEmploiService;
+import com.mycompany.myapp.service.dto.OffreEmploiCreateDTO;
 import com.mycompany.myapp.service.dto.OffreEmploiDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.ForwardedHeaderUtils;
@@ -234,4 +237,18 @@ public class OffreEmploiResource {
         return offreEmploiService.searchOffresMotParMot(keyword, typeContratId, localisation, salaireMin);
     }
     
+
+    @PostMapping("/poster")
+    public Mono<ResponseEntity<OffreEmploiDTO>> posterOffre(@Valid @RequestBody OffreEmploiCreateDTO dto) {
+        return offreEmploiService
+            .createOffrePourRecruteur(dto)
+            .map(saved -> ResponseEntity.status(HttpStatus.CREATED).body(saved));
+    }
+
+    @GetMapping("/mes-offres")
+    public Flux<OffreEmploiDTO> getMesOffres() {
+        return offreEmploiService.findAllForCurrentRecruteur();
+    }
+
+
 }
