@@ -34,6 +34,8 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.reactive.ResponseUtil;
 
+import com.mycompany.myapp.service.dto.UpdateStatutDTO;
+
 /**
  * REST controller for managing {@link com.mycompany.myapp.domain.Candidature}.
  */
@@ -247,12 +249,22 @@ public class CandidatureResource {
         return candidatureService.findAllReceivedByCurrentRecruteur();
     }
 
+    /*
     @PatchMapping("/{candidatureId}/accepter")
     public Mono<ResponseEntity<CandidatureDTO>> accepterCandidature(@PathVariable Long candidatureId) {
         return candidatureService.accepterCandidature(candidatureId)
             .map(ResponseEntity::ok);
     }
+             */
 
+    @PatchMapping("/{candidatureId}/statut")
+    public Mono<ResponseEntity<CandidatureDTO>> changerStatut(
+        @PathVariable Long candidatureId,
+        @Valid @RequestBody UpdateStatutDTO updateStatutDTO
+    ) {
+        return candidatureService.changerStatut(candidatureId, updateStatutDTO.getStatut())
+            .map(ResponseEntity::ok);
+    }
     
     
 }

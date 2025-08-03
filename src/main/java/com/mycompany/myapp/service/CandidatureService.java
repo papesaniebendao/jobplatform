@@ -7,7 +7,6 @@ import com.mycompany.myapp.domain.enumeration.StatutCandidature;
 import com.mycompany.myapp.repository.CandidatureRepository;
 import com.mycompany.myapp.repository.OffreEmploiRepository;
 import com.mycompany.myapp.repository.UtilisateurRepository;
-import com.mycompany.myapp.repository.projection.CandidatureRecueProjection;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.dto.CandidatureDTO;
 import com.mycompany.myapp.service.dto.CandidatureRecueDTO;
@@ -206,6 +205,7 @@ public class CandidatureService {
             });
     }
 
+    /*
     public Mono<CandidatureDTO> accepterCandidature(Long candidatureId) {
         return SecurityUtils.getCurrentUserLogin()
             .flatMap(utilisateurRepository::findByUserLogin)
@@ -226,6 +226,29 @@ public class CandidatureService {
             )
             .map(candidatureMapper::toDto);
     }
+             */
 
+    @Transactional
+    public Mono<CandidatureDTO> changerStatut(Long candidatureId, StatutCandidature statut) {
+        return SecurityUtils.getCurrentUserLogin()
+            .flatMap(utilisateurRepository::findByUserLogin)
+            .switchIfEmpty(Mono.error(new RuntimeException("Recruteur non trouvé")))
+            .flatMap(recruteur ->
+                candidatureRepository.findById(candidatureId)
+                    .switchIfEmpty(Mono.error(new RuntimeException("Candidature introuvable")))
+                    .flatMap(candidature ->
+                        offreEmploiRepository.findById(candidature.getOffreEmploiId())
+                            .flatMap(offre -> {
+                                if (!offre.getRecruteurId().equals(recruteur.getId())) {
+                                    return Mono.error(new RuntimeException("Non autorisé"));
+                                }
+                                candidature.setStatut(statut);
+                                return candidatureRepository.save(candidature);
+                            })
+                    )
+            )
+            .map(candidatureMapper::toDto);
+    }
+             
 
 }

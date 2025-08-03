@@ -23,6 +23,10 @@ import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.reactive.ResponseUtil;
 
+import org.springframework.http.codec.multipart.FilePart;
+import com.mycompany.myapp.domain.CV;
+
+
 /**
  * REST controller for managing {@link com.mycompany.myapp.domain.CV}.
  */
@@ -214,4 +218,16 @@ public class CVResource {
                 )
             );
     }
+
+    /**
+     * POST /cvs/upload : Upload d'un fichier CV.
+     * @param file le fichier à uploader
+     * @return CV sauvegardé
+     */
+
+     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+     public Mono<ResponseEntity<CV>> uploadCv(@RequestPart("file") FilePart file) {
+         return cVService.uploadCv(file).map(ResponseEntity::ok);  // ✅ Fixed: using cVService
+     }
+
 }

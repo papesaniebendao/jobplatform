@@ -2,17 +2,24 @@ package com.mycompany.myapp.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * Properties specific to Jobplatform.
- * <p>
- * Properties are configured in the {@code application.yml} file.
- * See {@link tech.jhipster.config.JHipsterProperties} for a good example.
- */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
-    // jhipster-needle-application-properties-property
 
-    // jhipster-needle-application-properties-property-getter
+    private final FileStorage fileStorage = new FileStorage();
 
-    // jhipster-needle-application-properties-property-class
+    public FileStorage getFileStorage() {
+        return fileStorage;
+    }
+
+    public static class FileStorage {
+        private String cvDir;
+
+        public String getCvDir() {
+            return cvDir;
+        }
+
+        public void setCvDir(String cvDir) {
+            this.cvDir = cvDir;
+        }
+    }
 }

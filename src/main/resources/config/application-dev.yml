@@ -101,3 +101,7 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  file-storage:
+    cv-dir: ./uploads/cv
+
