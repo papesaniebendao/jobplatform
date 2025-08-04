@@ -9,6 +9,13 @@ import com.mycompany.myapp.service.dto.OffreEmploiCreateDTO;
 import com.mycompany.myapp.service.dto.OffreEmploiDTO;
 import com.mycompany.myapp.service.mapper.OffreEmploiMapper;
 
+
+import com.mycompany.myapp.repository.TypeContratRepository;
+
+import com.mycompany.myapp.service.dto.TypeContratDTO;
+
+import com.mycompany.myapp.domain.TypeContrat;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.time.Instant;
@@ -35,10 +42,13 @@ public class OffreEmploiService {
 
     private final UtilisateurRepository utilisateurRepository;
 
-    public OffreEmploiService(OffreEmploiRepository offreEmploiRepository, UtilisateurRepository utilisateurRepository, OffreEmploiMapper offreEmploiMapper) {
+    private final TypeContratRepository typeContratRepository;
+
+    public OffreEmploiService(OffreEmploiRepository offreEmploiRepository, UtilisateurRepository utilisateurRepository, OffreEmploiMapper offreEmploiMapper, TypeContratRepository typeContratRepository) {
         this.offreEmploiRepository = offreEmploiRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.offreEmploiMapper = offreEmploiMapper;
+        this.typeContratRepository = typeContratRepository;
     }
 
     /**
@@ -128,6 +138,7 @@ public class OffreEmploiService {
     }
 
 
+    /*
     public Flux<OffreEmploiDTO> searchOffresMotParMot(
         String keyword,
         Long typeContratId,
@@ -154,8 +165,63 @@ public class OffreEmploiService {
                 return false; // Aucun mot ne correspond
             })            
             .map(offreEmploiMapper::toDto);
+    }*/
+
+    public Flux<OffreEmploiDTO> searchOffresMotParMot(
+        String keyword,
+        Long typeContratId,
+        String localisation,
+        Double salaireMin
+    ) {
+        // Si tous les paramètres sont vides/null, retourner toutes les offres
+        if (isAllParametersEmpty(keyword, typeContratId, localisation, salaireMin)) {
+            return getAllOffresWithTypeContrat();
+        }
+        
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return offreEmploiRepository
+                .findAllByFilters(typeContratId, localisation, salaireMin)
+                .flatMap(this::mapWithTypeContrat);
+        }
+
+        String[] mots = keyword.trim().toLowerCase().split("\\s+");
+
+        return offreEmploiRepository
+            .findAllByFilters(typeContratId, localisation, salaireMin)
+            .filter(offre -> {
+                String contenu = (offre.getTitre() + " " + offre.getDescription()).toLowerCase();
+                for (String mot : mots) {
+                    if (contenu.contains(mot)) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+            .flatMap(this::mapWithTypeContrat);
     }
 
+    // Nouvelle méthode pour vérifier si tous les paramètres sont vides
+    private boolean isAllParametersEmpty(String keyword, Long typeContratId, String localisation, Double salaireMin) {
+        return (keyword == null || keyword.trim().isEmpty()) &&
+               typeContratId == null &&
+               (localisation == null || localisation.trim().isEmpty()) &&
+               salaireMin == null;
+    }
+
+    private Mono<OffreEmploiDTO> mapWithTypeContrat(com.mycompany.myapp.domain.OffreEmploi offre) {
+        return typeContratRepository
+            .findById(offre.getTypeContratId())
+            .map(typeContrat -> {
+                OffreEmploiDTO dto = offreEmploiMapper.toDto(offre);
+                TypeContratDTO tcDto = new TypeContratDTO();
+                tcDto.setId(typeContrat.getId());
+                tcDto.setNom(typeContrat.getNom());
+                dto.setTypeContrat(tcDto);
+                return dto;
+            })
+            .switchIfEmpty(Mono.just(offreEmploiMapper.toDto(offre)));
+    }
+    
     public Mono<OffreEmploiDTO> createOffrePourRecruteur(OffreEmploiCreateDTO dto) {
         return SecurityUtils.getCurrentUserLogin()
             .switchIfEmpty(Mono.error(new RuntimeException("Utilisateur non connecté")))
